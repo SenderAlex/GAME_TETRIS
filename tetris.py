@@ -6,10 +6,10 @@ from tkinter import messagebox
 
 screen_width = 300
 screen_height = 600
-block_size = 30
+block_size = 30  #  размер одного блока в пикселях
 
-board_width = screen_width // block_size
-board_height = screen_height // block_size
+board_width = screen_width // block_size  # количество столбцов на экране в данном случае 10
+board_height = screen_height // block_size  # количество строк на экране в данном случае 20
 
 # цвета
 colors = [
@@ -47,7 +47,7 @@ class Tetromino:
 
 class Tetris():
     def __init__(self):
-        self.board = [[0]*board_width for _ in range(board_height)]  # ??
+        self.board = [[0]*board_width for _ in range(board_height)]  # двумерный список состоящиий из нулей по 10 в строке и строк 20
         self.current_tetromino = Tetromino()
         self.next_tetromino = Tetromino()
         self.score = 0
@@ -82,7 +82,7 @@ class Tetris():
         for y in clear_lines:
             del self.board[y]
             self.board.insert(0, [0]*board_width)
-            self.score += len(clear_lines)
+            self.score += 100
 
 
     # появление новой линии. Если сразу столкновение, то игра закончена
