@@ -35,7 +35,7 @@ shapes = [
 
 class Tetromino:
     def __init__(self):
-        self.shape = random.choice(shapes)
+        self.shape = random.choice(shapes)  # выбирается случайная фигура из списка
         self.color = random.randint(1, len(colors) - 1)
         self.x = board_width // 2 - len(self.shape[0]) // 2  # тетромины должны спускаться сверху экрана по середине
         self.y = 0
@@ -47,7 +47,8 @@ class Tetromino:
 
 class Tetris():
     def __init__(self):
-        self.board = [[0]*board_width for _ in range(board_height)]  # двумерный список состоящиий из нулей по 10 в строке и строк 20
+        self.board = [[0]*board_width for _ in range(board_height)]  # инициализируется двумерный список состоящиий
+        # из нулей по 10 в строке и строк 20
         self.current_tetromino = Tetromino()
         self.next_tetromino = Tetromino()
         self.score = 0
@@ -56,21 +57,23 @@ class Tetris():
     def collide(self):
         for y in range(len(self.current_tetromino.shape)):
             for x in range(len(self.current_tetromino.shape[y])):
-                if self.current_tetromino.shape[y][x]:
+                if self.current_tetromino.shape[y][x]: # есть ли блок в текущей позиции тетромино, т.е. равно 1
                     if (self.current_tetromino.x + x < 0 or
                     self.current_tetromino.x + x >= board_width or
                     self.current_tetromino.y + y >= board_height or
-                    self.board[self.current_tetromino.y + y][self.current_tetromino.x + x]):
+                    self.board[self.current_tetromino.y + y][self.current_tetromino.x + x]):  # проверяет занята ли
+                        # ячейка на игровом поле, куда будет помещен блок текущего тетромино
                         return True
         return False
 
-    # закрашиваем каждую фигурку тетриса в разные цвета
+    # фиксация текущего тетромино на игровом поле и окрашивается в определенный цвет
     def merge(self):
         for y in range(len(self.current_tetromino.shape)):
             for x in range(len(self.current_tetromino.shape[y])):
                 if self.current_tetromino.shape[y][x]:
                     self.board[self.current_tetromino.y + y][
-                        self.current_tetromino.x + x] = self.current_tetromino.color
+                        self.current_tetromino.x + x] = self.current_tetromino.color  #здесь присваивается рандомный
+                    # индекс. По какому принципу он дальше закрашивает фигуру мне не понятно????
 
     # очистка заполненых линий
     def clear_lines(self):
@@ -89,7 +92,7 @@ class Tetris():
     def new_tetromino(self):
         self.current_tetromino = self.next_tetromino
         self.next_tetromino = Tetromino()
-        if self.collide():
+        if self.collide():  # понимается столкновение и дальше не может появиться следующая фигурка
             print('GAME OVER')
             self.game_over = True
             show_game_over(self.score)
@@ -97,17 +100,18 @@ class Tetris():
 def draw_board(screen, board):
     for y in range(board_height):
         for x in range(board_width):
-            color = colors[board[y][x]]  # ???
+            color = colors[board[y][x]]  # это отрисовка поля тетриса, значит цвет должен быть черным.
+            # Как он здесь определяется?????
             pygame.draw.rect(screen, color, (x*block_size, y*block_size, block_size-1, block_size-1))
 
 def draw_tetromino(screen, tetromino):
     for y in range(len(tetromino.shape)):
         for x in range(len(tetromino.shape[y])):
             if tetromino.shape[y][x]:
-                color = colors[tetromino.color]  # ???
+                color = colors[tetromino.color]
                 pygame.draw.rect(screen, color,
                             ((tetromino.x+x)*block_size, (tetromino.y+y)*block_size,
-                                  block_size-1, block_size-1))
+                                  block_size-1, block_size-1))  # отрисовка блоков фигуры
 
 def draw_next_tetromino(screen, tetromino):
     offset_x = board_width + 1
@@ -116,10 +120,10 @@ def draw_next_tetromino(screen, tetromino):
     for y in range(len(tetromino.shape)):
         for x in range(len(tetromino.shape[y])):
             if tetromino.shape[y][x]:
-                color = colors[tetromino.color]  # ???
+                color = colors[tetromino.color]
                 pygame.draw.rect(screen, color,
                             ((offset_x+x)*block_size, (offset_y+y)*block_size,
-                                  block_size-1, block_size-1))
+                                  block_size-1, block_size-1))  # отрисовка блоков фигуры
 
 def show_game_over(score):
     root = tk.Tk()
