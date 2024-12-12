@@ -57,7 +57,7 @@ class Tetris():
     def collide(self):
         for y in range(len(self.current_tetromino.shape)):
             for x in range(len(self.current_tetromino.shape[y])):
-                if self.current_tetromino.shape[y][x]: # есть ли блок в текущей позиции тетромино, т.е. равно 1
+                if self.current_tetromino.shape[y][x]:  # есть ли блок в текущей позиции тетромино, т.е. равно 1
                     if (self.current_tetromino.x + x < 0 or
                     self.current_tetromino.x + x >= board_width or
                     self.current_tetromino.y + y >= board_height or
@@ -79,7 +79,7 @@ class Tetris():
     def clear_lines(self):
         clear_lines = []
         for y in range(board_height):
-            if all(self.board[y]):
+            if all(self.board[y]):  # метод all() проверяет являются ли все элементы истиными, т.е. равными 1
                 clear_lines.append(y)
 
         for y in clear_lines:
@@ -88,7 +88,7 @@ class Tetris():
             self.score += 100
 
 
-    # появление новой линии. Если сразу столкновение, то игра закончена
+    # появление новой фигурки тетриса. Если сразу столкновение, то игра закончена
     def new_tetromino(self):
         self.current_tetromino = self.next_tetromino
         self.next_tetromino = Tetromino()
@@ -100,8 +100,7 @@ class Tetris():
 def draw_board(screen, board):
     for y in range(board_height):
         for x in range(board_width):
-            color = colors[board[y][x]]  # это отрисовка поля тетриса, значит цвет должен быть черным.
-            # Как он здесь определяется?????
+            color = colors[board[y][x]]
             pygame.draw.rect(screen, color, (x*block_size, y*block_size, block_size-1, block_size-1))
 
 def draw_tetromino(screen, tetromino):
@@ -132,7 +131,6 @@ def show_game_over(score):
     root.destroy()
 
 
-
 def main():
     pygame.init()
     screen = pygame.display.set_mode((screen_width + block_size*5, screen_height))
@@ -147,7 +145,8 @@ def main():
         line_x = screen_width
         pygame.draw.line(screen, colors[6], (line_x, 0), (line_x, screen_height), 2)
 
-        for event in pygame.event.get():
+        for event in pygame.event.get():  # pygame.event.get() используется для извлечения событий с момента
+            # последнего вызова
             if event.type == pygame.QUIT:
                 running = False
             if not tetris.game_over:
